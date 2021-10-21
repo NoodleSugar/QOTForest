@@ -28,6 +28,12 @@ link_directories(${PROJECT_BINARY_DIR})
 set(HEADERS
 	include/QOTF/morton_code2.h
 	include/QOTF/morton_code3.h
+	include/QOTF/node2_index.h
+	include/QOTF/node3_index.h
+	include/QOTF/node_state.h
+	include/QOTF/utility.h
+	include/QOTF/ntree.h
+	include/QOTF/labeled_ntree.h
 	)
 
 set(ALL_TESTS
