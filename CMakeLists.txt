@@ -25,7 +25,13 @@ set(CMAKE_BUILD_TYPE Debug)
 include_directories(include)
 link_directories(${PROJECT_BINARY_DIR})
 
+set(SRCS
+	include/QOTF/bit_array.h
+	src/bit_array.cpp
+	)
+
 set(HEADERS
+	include/QOTF/bit_array.h
 	include/QOTF/morton_code2.h
 	include/QOTF/morton_code3.h
 	include/QOTF/node2_index.h
@@ -39,6 +45,7 @@ set(HEADERS
 set(ALL_TESTS
 	tests/all_tests.cpp
 	tests/tests_morton_code.h
+	tests/tests_bit_array.h
 	)
 
 find_package(Catch2 REQUIRED)
