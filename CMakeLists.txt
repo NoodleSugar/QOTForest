@@ -32,6 +32,7 @@ set(SRCS
 
 set(HEADERS
 	include/QOTF/bit_array.h
+	include/QOTF/morton_code.h
 	include/QOTF/morton_code2.h
 	include/QOTF/morton_code3.h
 	include/QOTF/node2_index.h
@@ -40,6 +41,10 @@ set(HEADERS
 	include/QOTF/utility.h
 	include/QOTF/ntree.h
 	include/QOTF/labeled_ntree.h
+	)
+
+set(TEMPLATES
+	include/QOTF/morton_code.tpp
 	)
 
 set(ALL_TESTS

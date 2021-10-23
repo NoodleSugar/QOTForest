@@ -1,6 +1,8 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+namespace QOTF
+{
 typedef unsigned int uint;
 
 template<int N>
@@ -20,5 +22,7 @@ struct PowerOfTwo<0>
 		value = 1
 	};
 };
+
+} // namespace QOTF
 
 #endif
