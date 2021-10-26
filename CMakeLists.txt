@@ -26,7 +26,6 @@ include_directories(include)
 link_directories(${PROJECT_BINARY_DIR})
 
 set(SRCS
-	include/QOTF/bit_array.h
 	src/bit_array.cpp
 	)
 

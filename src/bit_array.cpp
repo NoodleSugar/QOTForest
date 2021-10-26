@@ -262,6 +262,38 @@ void BitArray::remove(size_t bitIndex, size_t number)
 	unset(m_sizeInBits, number);
 }
 
+void BitArray::applyPattern(size_t bitIndex, byte pattern, uint patternSize, uint times)
+{
+	const byte patternMask = BYTE_MASK << (BYTE_SIZE_IN_BITS - patternSize);
+
+	while(bitIndex < m_sizeInBits && times > 0)
+	{
+		const size_t byteIndex	   = BYTE_INDEX_FROM_BIT_INDEX(bitIndex);
+		int			 bitInnerIndex = BIT_INDEX_IN_BYTE_FROM_BIT_INDEX(bitIndex);
+
+		{
+			const byte mask = ~(patternMask >> bitInnerIndex);
+			const byte bits = pattern >> bitInnerIndex;
+
+			m_bytes[byteIndex] &= mask;
+			m_bytes[byteIndex] |= bits;
+		}
+
+		bitInnerIndex += patternSize - BYTE_SIZE_IN_BITS;
+		if(bitInnerIndex > 0)
+		{
+			const byte mask = ~(BYTE_MASK << (BYTE_SIZE_IN_BITS - bitInnerIndex));
+			const byte bits = pattern << (patternSize - bitInnerIndex);
+
+			m_bytes[byteIndex + 1] &= mask;
+			m_bytes[byteIndex + 1] |= bits;
+		}
+
+		bitIndex += patternSize;
+		--times;
+	}
+}
+
 void BitArray::shiftRight(size_t bitIndex, size_t number, size_t value)
 {
 	size_t posLeft		 = bitIndex + value - 1; // The pos of bit before the leftmost bit accepting the copy

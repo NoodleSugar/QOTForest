@@ -358,4 +358,41 @@ TEST_CASE("BitArray remove bits", "BitArray")
 	}
 }
 
+TEST_CASE("BitArray apply pattern", "BitArray")
+{
+	BitArray array(16);
+	byte*	 bytes = array.getByteAccess();
+
+	bytes[0] = 0b11111111;
+	bytes[1] = 0b11111111;
+
+	SECTION("Full byte")
+	{
+		array.applyPattern(0, 0b10011100, 8);
+		CHECK((int)bytes[0] == 0b10011100);
+		CHECK((int)bytes[1] == 0b11111111);
+	}
+
+	SECTION("Three bits")
+	{
+		array.applyPattern(1, 0b01000000, 3);
+		CHECK((int)bytes[0] == 0b10101111);
+		CHECK((int)bytes[1] == 0b11111111);
+	}
+
+	SECTION("Two bits three times")
+	{
+		array.applyPattern(1, 0b10000000, 2, 3);
+		CHECK((int)bytes[0] == 0b11010101);
+		CHECK((int)bytes[1] == 0b11111111);
+	}
+
+	SECTION("On two bytes")
+	{
+		array.applyPattern(3, 0b10100000, 3, 4);
+		CHECK((int)bytes[0] == 0b11110110);
+		CHECK((int)bytes[1] == 0b11011011);
+	}
+}
+
 } // namespace QOTF

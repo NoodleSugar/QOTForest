@@ -81,6 +81,17 @@ public:
 	 */
 	void remove(size_t bitIndex, size_t number);
 
+	/**
+	 * Apply the [pattern] [times] times to the BitArray, starting a [bitIndex]
+	 * The pattern must be left aligned
+	 * Requires :
+	 * 	 - bitIndex + patternSize * times < sizeInBits
+	 *   - patternSize > 0
+	 *   - patternSize <= 8
+	 *   - times > 0
+	 */
+	void applyPattern(size_t bitIndex, byte pattern, uint patternSize, uint times = 1);
+
 private:
 	std::vector<byte> m_bytes;
 	size_t			  m_sizeInBits;
