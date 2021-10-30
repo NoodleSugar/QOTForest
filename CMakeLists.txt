@@ -40,16 +40,22 @@ set(HEADERS
 	include/QOTF/utility.h
 	include/QOTF/ntree.h
 	include/QOTF/labeled_ntree.h
+	include/QOTF/impl/bin_ntree.h
+	include/QOTF/impl/bin_ntree_node_index.h
+	include/QOTF/quadtree/bin_quadtree.h
+	include/QOTF/octree/bin_octree.h
 	)
 
 set(TEMPLATES
 	include/QOTF/morton_code.tpp
+	include/QOTF/impl/bin_ntree.tpp
 	)
 
 set(ALL_TESTS
 	tests/all_tests.cpp
 	tests/tests_morton_code.h
 	tests/tests_bit_array.h
+	tests/tests_bin_ntree.h
 	)
 
 find_package(Catch2 REQUIRED)
