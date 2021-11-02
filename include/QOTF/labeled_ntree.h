@@ -6,23 +6,25 @@
 namespace QOTF
 {
 template<uint D, typename L>
-class LabeledTree : public NTree<D>
+class LabeledNTree : public NTree<D>
 {
 public:
-	virtual ~LabeledTree() {}
+	virtual ~LabeledNTree() {}
 
 	/**
-	 * Get the label of the node at specific coordinates and level
+	 * Get the label of the node at specific coordinates and depth
 	 * The level represents the "size" of the node (in contrary to the depth) :
-	 *  - level = 0 : the deepest node is selected
-	 *  - level = max_depth : the root node is selected
+	 *  - depth = 1 :
+	 * 		the root node is selected
+	 *  - depth = max_depth :
+	 * 		the deepest node is selected
 	 */
-	virtual L getNodeLabel(uint64_t mortonCode, uint nodeLevel) const = 0;
+	virtual const L getNodeLabel(uint64_t mortonCode, uint nodeDepth) const = 0;
 
 	/**
-	 * Set the label of the node at specific coordinates and level
+	 * Set the label of the node at specific coordinates and depth
 	 */
-	virtual void setNodeLabel(uint64_t mortonCode, uint nodeLevel, const L& label) = 0;
+	virtual void setNodeLabel(uint64_t mortonCode, uint nodeDepth, const L& label) = 0;
 };
 } // namespace QOTF
 
