@@ -1,7 +1,6 @@
 #pragma once
 
 #include "bin_ntree.h"
-#include <QOTF/morton_code.h>
 #include <stdexcept>
 #include <string>
 
@@ -130,7 +129,7 @@ inline bool BinNTree<D>::optimizeNode(const _BinNTree::NodeIndex& parentIndex)
 }
 
 template<uint D>
-NodeState BinNTree<D>::getNodeState(uint64_t mortonCode, uint nodeDepth) const
+NodeState BinNTree<D>::getNodeState(const MortonCode<D>& mortonCode, uint nodeDepth) const
 {
 	uint				 level	   = m_depth - 1;
 	uint				 nodeLevel = m_depth - nodeDepth;
@@ -148,7 +147,7 @@ NodeState BinNTree<D>::getNodeState(uint64_t mortonCode, uint nodeDepth) const
 		case NODE_LEAF_FILLED_BITS:
 			return NodeState::LEAF_FILLED;
 		case NODE_COMPOSITE_EMPTY_BITS:
-			nodeIndex = getChildIndex(nodeIndex, MortonCode<D>::decode(mortonCode, --level));
+			nodeIndex = getChildIndex(nodeIndex, mortonCode.decode(--level));
 			break;
 		default:
 			const std::string errMsg("BitOctree::getNodeState : Error while reading nodes\nUNKNOWN NODE : {}");
@@ -171,7 +170,7 @@ NodeState BinNTree<D>::getNodeState(uint64_t mortonCode, uint nodeDepth) const
 }
 
 template<uint D>
-void BinNTree<D>::setNode(uint64_t mortonCode, uint nodeDepth)
+void BinNTree<D>::setNode(const MortonCode<D>& mortonCode, uint nodeDepth)
 {
 	uint				 level	   = m_depth - 1;
 	uint				 nodeLevel = m_depth - nodeDepth;
@@ -193,7 +192,7 @@ void BinNTree<D>::setNode(uint64_t mortonCode, uint nodeDepth)
 		case NODE_LEAF_FILLED_BITS:
 			return;
 		case NODE_COMPOSITE_EMPTY_BITS:
-			nodeIndex = getChildIndex(nodeIndex, MortonCode<D>::decode(mortonCode, --level));
+			nodeIndex = getChildIndex(nodeIndex, mortonCode.decode(--level));
 			break;
 		default:
 			const std::string errMsg("BitOctree::getNodeState : Error while reading nodes\nUNKNOWN NODE : {}");
@@ -239,13 +238,13 @@ leaf_empty:
 		nodeIndex.prev();
 
 		// Go to the target child of this node
-		nodeIndex = getChildIndex(nodeIndex, MortonCode<D>::decode(mortonCode, --level));
+		nodeIndex = getChildIndex(nodeIndex, mortonCode.decode(--level));
 	}
 	SET_NODE(nodeIndex, NODE_LEAF_FILLED_BITS);
 }
 
 template<uint D>
-void BinNTree<D>::removeNode(uint64_t mortonCode, uint nodeDepth)
+void BinNTree<D>::removeNode(const MortonCode<D>& mortonCode, uint nodeDepth)
 {
 	uint				 level	   = m_depth - 1;
 	uint				 nodeLevel = m_depth - nodeDepth;
@@ -269,7 +268,7 @@ void BinNTree<D>::removeNode(uint64_t mortonCode, uint nodeDepth)
 		case NODE_LEAF_FILLED_BITS:
 			goto leaf_filled;
 		case NODE_COMPOSITE_EMPTY_BITS:
-			nodeIndex = getChildIndex(nodeIndex, MortonCode<D>::decode(mortonCode, --level));
+			nodeIndex = getChildIndex(nodeIndex, mortonCode.decode(--level));
 			break;
 		default:
 			const std::string errMsg("BitOctree::getNodeState : Error while reading nodes\nUNKNOWN NODE : {}");
@@ -315,7 +314,7 @@ leaf_filled:
 		nodeIndex.prev();
 
 		// Go to the target child of this node
-		nodeIndex = getChildIndex(nodeIndex, MortonCode<D>::decode(mortonCode, --level));
+		nodeIndex = getChildIndex(nodeIndex, mortonCode.decode(--level));
 	}
 	CLEAN_NODE(nodeIndex);
 }

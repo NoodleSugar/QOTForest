@@ -1,12 +1,16 @@
 #ifndef NTREE_H
 #define NTREE_H
 
+#include "morton/morton_code.h"
 #include "node_state.h"
 #include "utility.h"
 #include <cstdint>
 
 namespace QOTF
 {
+/**
+ * D : spatial dimension of the tree
+ */
 template<uint D>
 class NTree
 {
@@ -15,8 +19,7 @@ class NTree
 public:
 	virtual ~NTree() {}
 
-	static const short MAX_MORTON_DEPTH = 64 / D;
-	static const short CHILDREN_NUMBER	= PowerOfTwo<D>::value;
+	static const short CHILDREN_NUMBER = PowerOfTwo<D>::value;
 
 	virtual uint getDepth() const = 0;
 
@@ -29,7 +32,7 @@ public:
 	 *  - depth = max_depth :
 	 *  	the deepest node is selected
 	 */
-	virtual NodeState getNodeState(uint64_t mortonCode, uint nodeDepth) const = 0;
+	virtual NodeState getNodeState(const MortonCode<D>&, uint nodeDepth) const = 0;
 };
 
 } // namespace QOTF

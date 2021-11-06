@@ -31,24 +31,6 @@ set(SRCS
 
 set(HEADERS
 	include/QOTF/bit_array.h
-	include/QOTF/morton_code.h
-	include/QOTF/morton_code2.h
-	include/QOTF/morton_code3.h
-	include/QOTF/node2_index.h
-	include/QOTF/node3_index.h
-	include/QOTF/node_state.h
-	include/QOTF/utility.h
-	include/QOTF/ntree.h
-	include/QOTF/labeled_ntree.h
-	include/QOTF/impl/bin_ntree.h
-	include/QOTF/impl/bin_ntree_node_index.h
-	include/QOTF/quadtree/bin_quadtree.h
-	include/QOTF/octree/bin_octree.h
-	)
-
-set(TEMPLATES
-	include/QOTF/morton_code.tpp
-	include/QOTF/impl/bin_ntree.tpp
 	)
 
 set(ALL_TESTS
@@ -60,7 +42,7 @@ set(ALL_TESTS
 
 find_package(Catch2 REQUIRED)
 
-add_library(QOTForest ${SRCS} ${HEADERS} ${TEMPLATES})
+add_library(QOTForest ${SRCS} ${HEADERS})
 target_link_libraries(QOTForest Catch2::Catch2)
 
 add_executable(QOTForestTests ${ALL_TESTS})

@@ -27,11 +27,11 @@ public:
 	/*
 	 * Note : if the target node is a subnode of a leaf, then it returns the state of this leaf
 	 */
-	NodeState getNodeState(uint64_t mortonCode, uint nodeDepth) const override;
+	NodeState getNodeState(const MortonCode<D>&, uint nodeDepth) const override;
 
-	void setNode(uint64_t mortonCode, uint nodeDepth);
+	void setNode(const MortonCode<D>&, uint nodeDepth);
 
-	void removeNode(uint64_t mortonCode, uint nodeDepth);
+	void removeNode(const MortonCode<D>&, uint nodeDepth);
 
 private:
 	BitArray m_bitArray;

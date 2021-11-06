@@ -1,6 +1,6 @@
-#pragma onde
+#pragma once
 
-#include "morton_code.h"
+#include "compact_morton_code.h"
 #include <QOTF/utility.h>
 
 namespace QOTF
@@ -41,7 +41,7 @@ namespace _Mask
 #define MASK5 0x00000001ULL
 
 template<uint D>
-uint64_t MortonCode<D>::split(uint n)
+uint64_t CompactMortonCode<D>::split(uint n)
 {
 	static constexpr uint	  dFactor	 = D - 2;
 	static constexpr uint64_t numberMask = ((uint64_t)1 << (64 / D)) - 1;
@@ -71,7 +71,7 @@ uint64_t MortonCode<D>::split(uint n)
 }
 
 template<uint D>
-uint64_t MortonCode<D>::encode(const Point& coords)
+uint64_t CompactMortonCode<D>::encode(const Point& coords)
 {
 	uint64_t code = 0;
 
@@ -82,10 +82,10 @@ uint64_t MortonCode<D>::encode(const Point& coords)
 }
 
 template<uint D>
-uint MortonCode<D>::decode(uint64_t c, uint level)
+uint CompactMortonCode<D>::decode(uint level) const
 {
 	const static uint mask = (1 << D) - 1;
-	return (c >> (D * level)) & mask;
+	return (m_code >> (D * level)) & mask;
 }
 
 } // namespace QOTF
