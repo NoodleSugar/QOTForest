@@ -19,7 +19,7 @@ class NTree
 public:
 	virtual ~NTree() {}
 
-	static const short CHILDREN_NUMBER = PowerOfTwo<D>::value;
+	static constexpr uint CHILDREN_NUMBER = powerOfTwo(D);
 
 	virtual uint getDepth() const = 0;
 

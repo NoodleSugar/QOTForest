@@ -112,7 +112,7 @@ inline bool BinNTree<D>::optimizeNode(const _BinNTree::NodeIndex& parentIndex)
 	if(firstChild == NODE_COMPOSITE_EMPTY_BITS)
 		return false;
 
-	for(int i = 1; i < BinNTree<D>::CHILDREN_NUMBER; i++)
+	for(uint i = 1; i < BinNTree<D>::CHILDREN_NUMBER; ++i)
 	{
 		childIndex.next();
 		if(firstChild != GET_NODE(childIndex))

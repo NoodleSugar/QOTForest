@@ -7,15 +7,15 @@ namespace QOTF
 {
 TEST_CASE("Basic Morton Code 2", "[BasicMortonCode<2>]")
 {
-	const uint MAX_DEPTH = sizeof(uint);
+	const uint	   LEVEL_NUMBER = 64;
+	const uint64_t MAX_COORD	= 0xFFFF'FFFF'FFFF'FFFF;
 
 	BasicMortonCode<2> c1({0, 0});
 	BasicMortonCode<2> c2({1, 1});
 	BasicMortonCode<2> c3({2, 2});
 	BasicMortonCode<2> c4({3, 3});
 	BasicMortonCode<2> c5({63, 2});
-	BasicMortonCode<2> c6({0, (1 << MAX_DEPTH) - 1});
-	BasicMortonCode<2> c7({0, 1 << MAX_DEPTH});
+	BasicMortonCode<2> c6({0, MAX_COORD});
 
 	CHECK(c1.decode(0) == 0);
 	CHECK(c2.decode(0) == 3);
@@ -30,24 +30,21 @@ TEST_CASE("Basic Morton Code 2", "[BasicMortonCode<2>]")
 	CHECK(c5.decode(4) == 2);
 	CHECK(c5.decode(5) == 2);
 
-	for(int i = 0; i < MAX_DEPTH; i++)
-	{
+	for(uint i = 0; i < LEVEL_NUMBER; ++i)
 		CHECK(c6.decode(i) == 1);
-		CHECK(c7.decode(i) == 0);
-	}
 }
 
 TEST_CASE("Basic Morton Code 3", "[BasicMortonCode<3>]")
 {
-	const uint MAX_DEPTH = sizeof(uint);
+	const uint	   LEVEL_NUMBER = 64;
+	const uint64_t MAX_COORD	= 0xFFFF'FFFF'FFFF'FFFF;
 
 	BasicMortonCode<3> c1({0, 0, 0});
 	BasicMortonCode<3> c2({1, 1, 1});
 	BasicMortonCode<3> c3({2, 2, 2});
 	BasicMortonCode<3> c4({3, 3, 3});
 	BasicMortonCode<3> c5({63, 0, 2});
-	BasicMortonCode<3> c6({0, 0, (1 << MAX_DEPTH) - 1});
-	BasicMortonCode<3> c7({0, 0, 1 << MAX_DEPTH});
+	BasicMortonCode<3> c6({0, 0, MAX_COORD});
 
 	CHECK(c1.decode(0) == 0);
 	CHECK(c2.decode(0) == 7);
@@ -62,24 +59,21 @@ TEST_CASE("Basic Morton Code 3", "[BasicMortonCode<3>]")
 	CHECK(c5.decode(4) == 4);
 	CHECK(c5.decode(5) == 4);
 
-	for(int i = 0; i < MAX_DEPTH; i++)
-	{
+	for(uint i = 0; i < LEVEL_NUMBER; ++i)
 		CHECK(c6.decode(i) == 1);
-		CHECK(c7.decode(i) == 0);
-	}
 }
 
 TEST_CASE("Compact Morton Code 2", "[CompactMortonCode<2>]")
 {
-	const uint MAX_DEPTH = 64 / 2;
+	const uint	   LEVEL_NUMBER = 32;
+	const uint32_t MAX_COORD	= 0xFFFFFFFF;
 
 	CompactMortonCode<2> c1({0, 0});
 	CompactMortonCode<2> c2({1, 1});
 	CompactMortonCode<2> c3({2, 2});
 	CompactMortonCode<2> c4({3, 3});
 	CompactMortonCode<2> c5({63, 2});
-	CompactMortonCode<2> c6({0, (1 << MAX_DEPTH) - 1});
-	CompactMortonCode<2> c7({0, 1 << MAX_DEPTH});
+	CompactMortonCode<2> c6({0, MAX_COORD});
 
 	CHECK(c1.decode(0) == 0);
 	CHECK(c2.decode(0) == 3);
@@ -94,24 +88,21 @@ TEST_CASE("Compact Morton Code 2", "[CompactMortonCode<2>]")
 	CHECK(c5.decode(4) == 2);
 	CHECK(c5.decode(5) == 2);
 
-	for(int i = 0; i < MAX_DEPTH; i++)
-	{
+	for(uint i = 0; i < LEVEL_NUMBER; ++i)
 		CHECK(c6.decode(i) == 1);
-		CHECK(c7.decode(i) == 0);
-	}
 }
 
 TEST_CASE("Compact Morton Code 3", "[CompactMortonCode<3>]")
 {
-	const uint MAX_DEPTH = 64 / 3;
+	const uint	   LEVEL_NUMBER = 21;
+	const uint32_t MAX_COORD	= 0x1FFFFF;
 
 	CompactMortonCode<3> c1({0, 0, 0});
 	CompactMortonCode<3> c2({1, 1, 1});
 	CompactMortonCode<3> c3({2, 2, 2});
 	CompactMortonCode<3> c4({3, 3, 3});
 	CompactMortonCode<3> c5({63, 0, 2});
-	CompactMortonCode<3> c6({0, 0, (1 << MAX_DEPTH) - 1});
-	CompactMortonCode<3> c7({0, 0, 1 << MAX_DEPTH});
+	CompactMortonCode<3> c6({0, 0, MAX_COORD});
 
 	CHECK(c1.decode(0) == 0);
 	CHECK(c2.decode(0) == 7);
@@ -126,11 +117,8 @@ TEST_CASE("Compact Morton Code 3", "[CompactMortonCode<3>]")
 	CHECK(c5.decode(4) == 4);
 	CHECK(c5.decode(5) == 4);
 
-	for(int i = 0; i < MAX_DEPTH; i++)
-	{
+	for(uint i = 0; i < LEVEL_NUMBER; ++i)
 		CHECK(c6.decode(i) == 1);
-		CHECK(c7.decode(i) == 0);
-	}
 }
 
 } // namespace QOTF

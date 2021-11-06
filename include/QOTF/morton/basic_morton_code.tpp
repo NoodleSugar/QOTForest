@@ -9,7 +9,7 @@ uint BasicMortonCode<D>::decode(uint level) const
 {
 	uint index = 0;
 
-	for(int i = 1; i <= D; i++)
+	for(uint i = 1; i <= D; ++i)
 		index |= ((m_coords[i - 1] >> level) & 1) << D - i;
 
 	return index;

@@ -3,11 +3,12 @@
 
 #include "QOTF/bit_array.h"
 #include "QOTF/ntree.h"
-#include "QOTF/utility.h"
 #include "bin_ntree_node_index.h"
 
 namespace QOTF
 {
+typedef unsigned int uint;
+
 /**
  * A structure for compact trees with no label
  * It has 3 types of nodes :

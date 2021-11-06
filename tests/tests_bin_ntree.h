@@ -57,8 +57,8 @@ TEST_CASE("BinNTree init node", "[BinNTree]")
 
 	SECTION("Empty tree")
 	{
-		for(uint x = 0; x < treeDiv; x++)
-			for(uint y = 0; y < treeDiv; y++)
+		for(uint x = 0; x < treeDiv; ++x)
+			for(uint y = 0; y < treeDiv; ++y)
 				CHECK(quadtree.getNodeState(CompactMortonCode<2>({x, y}), 3) == NodeState::LEAF_EMPTY);
 	}
 }

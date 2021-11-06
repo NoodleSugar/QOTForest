@@ -2,6 +2,8 @@
 #define COMPACT_MORTON_CODE
 
 #include "morton_code.h"
+#include <array>
+#include <cstdint>
 
 namespace QOTF
 {
@@ -9,7 +11,7 @@ template<uint D>
 class CompactMortonCode : public MortonCode<D>
 {
 public:
-	using Point = std::array<uint, D>;
+	using Point = std::array<uint32_t, D>;
 
 	CompactMortonCode() = delete;
 

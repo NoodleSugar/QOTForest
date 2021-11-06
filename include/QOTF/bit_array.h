@@ -5,9 +5,8 @@
 
 namespace QOTF
 {
-using byte = unsigned char;
-
-typedef unsigned int uint;
+typedef unsigned int  uint;
+typedef unsigned char byte;
 
 class BitArray
 {

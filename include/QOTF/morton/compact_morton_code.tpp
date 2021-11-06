@@ -5,34 +5,27 @@
 
 namespace QOTF
 {
-namespace _Mask
+namespace _MortonMask
 {
-	template<uint N, uint NN, uint D, uint64_t M>
-	struct _Rec
+	template<uint N, uint D, uint64_t M>
+	constexpr uint64_t _get(uint n)
 	{
-		enum
+		if(n == 0)
+			return M;
+		else
 		{
-			shift = (PowerOfTwo<4 + N - NN>::value * D),
-			mask  = (shift > 63 ? M : _Rec<N - 1, NN, D, M>::value),
-			value = (shift > 63 ? mask : (mask | (mask << shift)))
-		};
-	};
-
-	template<uint NN, uint D, uint64_t M>
-	struct _Rec<0, NN, D, M>
-	{
-		enum
-		{
-			shift = 0,
-			mask  = M,
-			value = M
-		};
-	};
+			const uint	   shift = powerOfTwo(4 + n - N) * D;
+			const uint64_t mask	 = shift > 63 ? M : _get<N, D, M>(n - 1);
+			return (shift > 63 ? mask : (mask | (mask << shift)));
+		}
+	}
 
 	template<uint N, uint D, uint64_t M>
-	using Rec = _Rec<N, N, D, M>;
-
-} // namespace _Mask
+	constexpr uint64_t get()
+	{
+		return _get<N, D, M>(N);
+	}
+} // namespace _MortonMask
 
 #define MASK1 0x0000FFFFULL
 #define MASK2 0x000000FFULL
@@ -52,11 +45,11 @@ uint64_t CompactMortonCode<D>::split(uint n)
 	static constexpr uint shift4 = 2 << dFactor;
 	static constexpr uint shift5 = 1 << dFactor;
 
-	static constexpr uint64_t mask1 = _Mask::Rec<1, D, MASK1>::value;
-	static constexpr uint64_t mask2 = _Mask::Rec<2, D, MASK2>::value;
-	static constexpr uint64_t mask3 = _Mask::Rec<3, D, MASK3>::value;
-	static constexpr uint64_t mask4 = _Mask::Rec<4, D, MASK4>::value;
-	static constexpr uint64_t mask5 = _Mask::Rec<5, D, MASK5>::value;
+	static constexpr uint64_t mask1 = _MortonMask::get<1, D, MASK1>();
+	static constexpr uint64_t mask2 = _MortonMask::get<2, D, MASK2>();
+	static constexpr uint64_t mask3 = _MortonMask::get<3, D, MASK3>();
+	static constexpr uint64_t mask4 = _MortonMask::get<4, D, MASK4>();
+	static constexpr uint64_t mask5 = _MortonMask::get<5, D, MASK5>();
 
 	// Keep the first (64 / D) bits
 	uint64_t x = n & numberMask;
@@ -70,12 +63,18 @@ uint64_t CompactMortonCode<D>::split(uint n)
 	return x;
 }
 
+#undef MASK1
+#undef MASK2
+#undef MASK3
+#undef MASK4
+#undef MASK5
+
 template<uint D>
 uint64_t CompactMortonCode<D>::encode(const Point& coords)
 {
 	uint64_t code = 0;
 
-	for(int i = 1; i <= D; i++)
+	for(uint i = 1; i <= D; ++i)
 		code |= split(coords[i - 1]) << (D - i);
 
 	return code;
@@ -84,7 +83,7 @@ uint64_t CompactMortonCode<D>::encode(const Point& coords)
 template<uint D>
 uint CompactMortonCode<D>::decode(uint level) const
 {
-	const static uint mask = (1 << D) - 1;
+	static constexpr uint mask = (1 << D) - 1;
 	return (m_code >> (D * level)) & mask;
 }
 
