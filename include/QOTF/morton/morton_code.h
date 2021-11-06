@@ -1,8 +1,6 @@
 #ifndef MORTON_CODE_H
 #define MORTON_CODE_H
 
-#include <cstdint>
-
 namespace QOTF
 {
 typedef unsigned int uint;

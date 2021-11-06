@@ -269,7 +269,7 @@ void BitArray::applyPattern(size_t bitIndex, byte pattern, uint patternSize, uin
 	while(bitIndex < m_sizeInBits && times > 0)
 	{
 		const size_t byteIndex	   = BYTE_INDEX_FROM_BIT_INDEX(bitIndex);
-		int			 bitInnerIndex = BIT_INDEX_IN_BYTE_FROM_BIT_INDEX(bitIndex);
+		uint		 bitInnerIndex = BIT_INDEX_IN_BYTE_FROM_BIT_INDEX(bitIndex);
 
 		{
 			const byte mask = ~(patternMask >> bitInnerIndex);

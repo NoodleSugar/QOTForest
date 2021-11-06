@@ -3,6 +3,7 @@
 
 #include "morton_code.h"
 #include <array>
+#include <cstdint>
 
 namespace QOTF
 {
@@ -10,7 +11,7 @@ template<uint D>
 class BasicMortonCode : public MortonCode<D>
 {
 public:
-	using Point = std::array<uint, D>;
+	using Point = std::array<uint64_t, D>;
 
 	BasicMortonCode() = delete;
 
