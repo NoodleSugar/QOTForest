@@ -1,52 +1,33 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.22.0)
+project(
+	QOTForest
+		VERSION 0.1.0
+		DESCRIPTION "Quadtree / Octree library for C++"
+		LANGUAGES CXX
+)
 
-function(run_tests name executable)
-    set(_test_state "${PROJECT_BINARY_DIR}/run_tests/${executable}.passed")
-    add_custom_command(
-        OUTPUT ${_test_state}
-        COMMAND $<TARGET_FILE:${executable}>
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_BINARY_DIR}/run_tests"
-        COMMAND ${CMAKE_COMMAND} -E touch ${_test_state}
-        DEPENDS ${executable}
-        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        )
-    add_custom_target(
-        ${name}
-        ALL
-        DEPENDS ${_test_state}
-        )
-endfunction()
+include(CTest)
 
-project(libQOTForest)
+# QOTForest Library
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_BUILD_TYPE Debug)
+add_library(${PROJECT_NAME} STATIC)
 
-include_directories(include)
-link_directories(${PROJECT_BINARY_DIR})
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
-set(SRCS
-	src/bit_array.cpp
-	)
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-set(HEADERS
-	include/QOTF/bit_array.h
-	)
+target_sources(${PROJECT_NAME}
+	PRIVATE
+		src/internal/BitVector.cpp
+)
 
-set(ALL_TESTS
-	tests/all_tests.cpp
-	tests/tests_morton_code.h
-	tests/tests_bit_array.h
-	tests/tests_bin_ntree.h
-	)
+# AFECS Tests
 
-find_package(Catch2 REQUIRED)
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(tests)
+endif ()
 
-add_library(QOTForest ${SRCS} ${HEADERS})
-target_link_libraries(QOTForest Catch2::Catch2)
-
-add_executable(QOTForestTests ${ALL_TESTS})
-target_link_libraries(QOTForestTests libQOTForest.a)
+enable_testing()
 
 if(RUN_TESTS)
     run_tests(runQOTForestTests QOTForestTests)

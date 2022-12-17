@@ -1,14 +1,13 @@
-#ifndef LABELED_NTREE_H
-#define LABELED_NTREE_H
+#pragma once
 
-#include "ntree.h"
+#include <qotf/NTree.h>
 
-namespace QOTF
+namespace qotf
 {
 /**
  * L : type of the labels
  */
-template<uint D, typename L>
+template<unsigned int D, typename L>
 class LabeledNTree : public NTree<D>
 {
 public:
@@ -29,6 +28,4 @@ public:
 	 */
 	virtual void setNodeLabel(const MortonCode<D>&, uint nodeDepth, const L&) = 0;
 };
-} // namespace QOTF
-
-#endif
+} // namespace qotf
