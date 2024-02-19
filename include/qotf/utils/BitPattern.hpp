@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qotf/utils/Type.hpp>
+#include <qotf/utils/Types.hpp>
 
 #include <vector>
 

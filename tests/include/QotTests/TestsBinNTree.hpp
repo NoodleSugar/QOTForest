@@ -2,8 +2,8 @@
 
 #include <catch2/catch.hpp>
 
-#include <qotf/morton/CompactMortonCode.hpp>
-#include <qotf/binary/BinNTree.hpp>
+#include <qotf/morton/MortonCode.hpp>
+#include <qotf/binary/BinDTree.hpp>
 
 /**
  *
@@ -47,12 +47,12 @@
 namespace qotf
 {
 
-using BinQuadtree = BinNTree<2>;
+using BinQuadtree = BinDTree<2>;
 
-TEST_CASE("BinNTree init node", "[BinNTree]")
+TEST_CASE("BinDTree init node", "[BinDTree]")
 {
 	BinQuadtree			 quadtree(3);
-	CompactMortonCode<2> c({0, 0});
+	MortonCode<2> c({0, 0});
 
 	const uint treeDiv = 4;
 
@@ -64,14 +64,14 @@ TEST_CASE("BinNTree init node", "[BinNTree]")
 	{
 		for(uint x = 0; x < treeDiv; ++x)
 			for(uint y = 0; y < treeDiv; ++y)
-				CHECK(quadtree.getNodeState(CompactMortonCode<2>({x, y}), 3) == NodeState::LeafEmpty);
+				CHECK(quadtree.getNodeState(MortonCode<2>({x, y}), 3) == NodeState::LeafEmpty);
 	}
 }
 
-TEST_CASE("BinNTree set node", "[BinNTree]")
+TEST_CASE("BinDTree set node", "[BinDTree]")
 {
 	BinQuadtree			 quadtree(3);
-	CompactMortonCode<2> c({0, 0});
+	MortonCode<2> c({0, 0});
 
 	SECTION("Deepest node")
 	{
@@ -81,11 +81,11 @@ TEST_CASE("BinNTree set node", "[BinNTree]")
 		CHECK(quadtree.getNodeState(c, 1) == NodeState::CompositeEmpty);
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::CompositeEmpty);
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({0, 1});
+		c = MortonCode<2>({0, 1});
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({1, 0});
+		c = MortonCode<2>({1, 0});
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({1, 1});
+		c = MortonCode<2>({1, 1});
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafEmpty);
 	}
 
@@ -95,35 +95,35 @@ TEST_CASE("BinNTree set node", "[BinNTree]")
 		CHECK(quadtree.getNodeCount() == 1);
 
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({0, 2});
+		c = MortonCode<2>({0, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({2, 0});
+		c = MortonCode<2>({2, 0});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({2, 2});
+		c = MortonCode<2>({2, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
 	}
 
 	SECTION("Intermediary node")
 	{
-		c = CompactMortonCode<2>({2, 0});
+		c = MortonCode<2>({2, 0});
 		quadtree.setNode(c, 2);
 		CHECK(quadtree.getNodeCount() == 5);
 
 		CHECK(quadtree.getNodeState(c, 1) == NodeState::CompositeEmpty);
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({0, 0});
+		c = MortonCode<2>({0, 0});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({0, 2});
+		c = MortonCode<2>({0, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({2, 2});
+		c = MortonCode<2>({2, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
 	}
 }
 
-TEST_CASE("BinNTree remove node", "[BinNTree]")
+TEST_CASE("BinDTree remove node", "[BinDTree]")
 {
 	BinQuadtree			 quadtree(3);
-	CompactMortonCode<2> c({0, 0});
+	MortonCode<2> c({0, 0});
 
 	quadtree.setNode(c, 1);
 	CHECK(quadtree.getNodeCount() == 1);
@@ -136,11 +136,11 @@ TEST_CASE("BinNTree remove node", "[BinNTree]")
 		CHECK(quadtree.getNodeState(c, 1) == NodeState::CompositeEmpty);
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::CompositeEmpty);
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({0, 1});
+		c = MortonCode<2>({0, 1});
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({1, 0});
+		c = MortonCode<2>({1, 0});
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({1, 1});
+		c = MortonCode<2>({1, 1});
 		CHECK(quadtree.getNodeState(c, 3) == NodeState::LeafFilled);
 	}
 
@@ -150,91 +150,91 @@ TEST_CASE("BinNTree remove node", "[BinNTree]")
 		CHECK(quadtree.getNodeCount() == 1);
 
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({0, 2});
+		c = MortonCode<2>({0, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({2, 0});
+		c = MortonCode<2>({2, 0});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({2, 2});
+		c = MortonCode<2>({2, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
 	}
 
 	SECTION("Intermediary node")
 	{
-		c = CompactMortonCode<2>({2, 0});
+		c = MortonCode<2>({2, 0});
 		quadtree.removeNode(c, 2);
 		CHECK(quadtree.getNodeCount() == 5);
 
 		CHECK(quadtree.getNodeState(c, 1) == NodeState::CompositeEmpty);
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafEmpty);
-		c = CompactMortonCode<2>({0, 0});
+		c = MortonCode<2>({0, 0});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({0, 2});
+		c = MortonCode<2>({0, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
-		c = CompactMortonCode<2>({2, 2});
+		c = MortonCode<2>({2, 2});
 		CHECK(quadtree.getNodeState(c, 2) == NodeState::LeafFilled);
 	}
 }
 
-TEST_CASE("BinNTree node set optimization", "[BinNTree]")
+TEST_CASE("BinDTree node set optimization", "[BinDTree]")
 {
 	BinQuadtree
 	 quadtree(3);
 
-	CompactMortonCode<2> c({0, 2});
+	MortonCode<2> c({0, 2});
 	quadtree.setNode(c, 2);
-	c = CompactMortonCode<2>({2, 0});
+	c = MortonCode<2>({2, 0});
 	quadtree.setNode(c, 2);
-	c = CompactMortonCode<2>({2, 2});
+	c = MortonCode<2>({2, 2});
 	quadtree.setNode(c, 2);
 
 	CHECK(quadtree.getNodeCount() == 5);
 	CHECK(quadtree.getNodeState(c, 1) == NodeState::CompositeEmpty);
 
-	c = CompactMortonCode<2>({0, 0});
+	c = MortonCode<2>({0, 0});
 	quadtree.setNode(c, 3);
-	c = CompactMortonCode<2>({0, 1});
+	c = MortonCode<2>({0, 1});
 	quadtree.setNode(c, 3);
 
 	CHECK(quadtree.getNodeCount() == 9);
 	CHECK(quadtree.getNodeState(c, 2) == NodeState::CompositeEmpty);
 
-	c = CompactMortonCode<2>({1, 0});
+	c = MortonCode<2>({1, 0});
 	quadtree.setNode(c, 3);
-	c = CompactMortonCode<2>({1, 1});
+	c = MortonCode<2>({1, 1});
 	quadtree.setNode(c, 3);
 
 	CHECK(quadtree.getNodeCount() == 1);
 	CHECK(quadtree.getNodeState(c, 1) == NodeState::LeafFilled);
 }
 
-TEST_CASE("BinNTree node remove optimization", "[BinNTree]")
+TEST_CASE("BinDTree node remove optimization", "[BinDTree]")
 {
 	BinQuadtree quadtree(3);
 
-	CompactMortonCode<2> c({0, 0});
+	MortonCode<2> c({0, 0});
 	quadtree.setNode(c, 1);
 
-	c = CompactMortonCode<2>({0, 2});
+	c = MortonCode<2>({0, 2});
 	quadtree.removeNode(c, 2);
-	c = CompactMortonCode<2>({2, 0});
+	c = MortonCode<2>({2, 0});
 	quadtree.removeNode(c, 2);
-	c = CompactMortonCode<2>({2, 2});
+	c = MortonCode<2>({2, 2});
 	quadtree.removeNode(c, 2);
 
 	CHECK(quadtree.getNodeCount() == 5);
 	CHECK(quadtree.getNodeState(c, 1) == NodeState::CompositeEmpty);
 
-	c = CompactMortonCode<2>({0, 0});
+	c = MortonCode<2>({0, 0});
 	quadtree.removeNode(c, 3);
-	c = CompactMortonCode<2>({0, 1});
+	c = MortonCode<2>({0, 1});
 	quadtree.removeNode(c, 3);
 
 	CHECK(quadtree.getNodeCount() == 9);
 	CHECK(quadtree.getNodeState(c, 2) == NodeState::CompositeEmpty);
 
-	c = CompactMortonCode<2>({1, 0});
+	c = MortonCode<2>({1, 0});
 	quadtree.removeNode(c, 3);
-	c = CompactMortonCode<2>({1, 1});
+	c = MortonCode<2>({1, 1});
 	quadtree.removeNode(c, 3);
 
 	CHECK(quadtree.getNodeCount() == 1);

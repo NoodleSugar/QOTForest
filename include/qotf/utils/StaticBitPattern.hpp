@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qotf/internal/Utils.hpp>
-#include <qotf/utils/Type.hpp>
+#include <qotf/utils/Types.hpp>
 
 namespace qotf
 {

@@ -1,3 +1,3 @@
 # QOT QOT Forest
 
-Quadtrees & Octrees library
+Quadtrees & Octrees library using morton code

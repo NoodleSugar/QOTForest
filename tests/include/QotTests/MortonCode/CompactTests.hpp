@@ -2,22 +2,22 @@
 
 #include <catch2/catch.hpp>
 
-#include <qotf/morton/CompactMortonCode.hpp>
+#include <qotf/morton/MortonCode.hpp>
 
 namespace qotf
 {
 
-TEST_CASE("Compact Morton Code 2", "[CompactMortonCode<2>]")
+TEST_CASE("Compact Morton Code 2", "[MortonCode<2>]")
 {
 	constexpr uint	   kLevelCount = 32;
 	constexpr uint32_t kMaxCoord   = 0xFFFFFFFF;
 
-	CompactMortonCode<2> c1({0, 0});
-	CompactMortonCode<2> c2({1, 1});
-	CompactMortonCode<2> c3({2, 2});
-	CompactMortonCode<2> c4({3, 3});
-	CompactMortonCode<2> c5({63, 2});
-	CompactMortonCode<2> c6({0, kMaxCoord});
+	MortonCode<2> c1({0, 0});
+	MortonCode<2> c2({1, 1});
+	MortonCode<2> c3({2, 2});
+	MortonCode<2> c4({3, 3});
+	MortonCode<2> c5({63, 2});
+	MortonCode<2> c6({0, kMaxCoord});
 
 	CHECK(c1.decode(0) == 0);
 	CHECK(c2.decode(0) == 3);
@@ -36,17 +36,17 @@ TEST_CASE("Compact Morton Code 2", "[CompactMortonCode<2>]")
 		CHECK(c6.decode(i) == 1);
 }
 
-TEST_CASE("Compact Morton Code 3", "[CompactMortonCode<3>]")
+TEST_CASE("Compact Morton Code 3", "[MortonCode<3>]")
 {
 	constexpr uint	   kLevelCount = 21;
 	constexpr uint32_t kMaxCoord   = 0x1FFFFF;
 
-	CompactMortonCode<3> c1({0, 0, 0});
-	CompactMortonCode<3> c2({1, 1, 1});
-	CompactMortonCode<3> c3({2, 2, 2});
-	CompactMortonCode<3> c4({3, 3, 3});
-	CompactMortonCode<3> c5({63, 0, 2});
-	CompactMortonCode<3> c6({0, 0, kMaxCoord});
+	MortonCode<3> c1({0, 0, 0});
+	MortonCode<3> c2({1, 1, 1});
+	MortonCode<3> c3({2, 2, 2});
+	MortonCode<3> c4({3, 3, 3});
+	MortonCode<3> c5({63, 0, 2});
+	MortonCode<3> c6({0, 0, kMaxCoord});
 
 	CHECK(c1.decode(0) == 0);
 	CHECK(c2.decode(0) == 7);
